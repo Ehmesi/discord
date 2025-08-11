@@ -16,7 +16,8 @@ def home():
     return "Bot is running!"
 
 def run():
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 def keep_alive():
     t = Thread(target=run)
@@ -28,19 +29,18 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f"Logged in as {bot.user}")
+    print(f"✅ Logged in as {bot.user}")
     send_message.start()
 
-@tasks.loop(minutes=5)
+@tasks.loop(minutes=30)
 async def send_message():
     channel = bot.get_channel(CHANNEL_ID)
     if channel:
         await channel.send(MESSAGE)
     else:
-        print("Channel not found!")
+        print("⚠️ Channel not found!")
 
 # === START BOT ===
 keep_alive()
-TOKEN = os.environ['TOKEN']  # Token stored in Heroku config vars
+TOKEN = os.environ['TOKEN']  # Set in Railway variables
 bot.run(TOKEN)
-

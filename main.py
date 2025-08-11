@@ -5,7 +5,7 @@ from flask import Flask
 from threading import Thread
 
 # === CONFIGURATION ===
-CHANNEL_ID = 1374155533774229584  # Replace with your channel ID
+CHANNEL_ID = 718948680467742783  # Replace with your channel ID
 MESSAGE = "@everyone haggle retards"
 
 # === KEEP ALIVE WEB SERVER ===
@@ -31,7 +31,7 @@ async def on_ready():
     print(f"Logged in as {bot.user}")
     send_message.start()
 
-@tasks.loop(minutes=240)
+@tasks.loop(minutes=5)
 async def send_message():
     channel = bot.get_channel(CHANNEL_ID)
     if channel:
@@ -43,3 +43,4 @@ async def send_message():
 keep_alive()
 TOKEN = os.environ['TOKEN']  # Token stored in Heroku config vars
 bot.run(TOKEN)
+
